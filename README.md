@@ -31,7 +31,8 @@
 ---
 
 ## 2.1 Baseball API 프로젝트 구조
-```Baseball-API-Fast-ver/
+```
+Baseball-API-Fast-ver/
 ├── app/
 │   ├── api/
 │   │   └── v1/
@@ -60,4 +61,5 @@
 ├── .env                                # 환경 변수 파일
 ├── Dockerfile                          # Docker 설정 파일
 ├── requirements.txt                    # Python 의존성 목록
-└── .gitignore                          # Git에서 제외할 파일 목록```
+└── .gitignore                          # Git에서 제외할 파일 목록
+```
