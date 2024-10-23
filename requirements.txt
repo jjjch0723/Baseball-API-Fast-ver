@@ -1,6 +1,8 @@
-fastapi
-uvicorn
-sqlalchemy
-psycopg2-binary    # PostgreSQL 드라이버
-pydantic
-python-dotenv      # .env 파일을 읽기 위한 라이브러리
+fastapi==0.95.1
+uvicorn==0.22.0
+requests==2.31.0
+beautifulsoup4==4.12.2
+pydantic==2.7.0
+statsapi==1.3.8
+psycopg2==2.9.7
+python-dotenv==1.0.0
