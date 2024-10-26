@@ -2,7 +2,6 @@ from fastapi import APIRouter, HTTPException, Response
 from fastapi.responses import JSONResponse
 from app.db.connection import get_connection
 from app.core.config import settings
-import resources.getBaseBallRating as gbr # 예상결과
 import resources.getCurKBOrslt as gckr # 최근 kbo경기 결과
 import resources.getCurMLBrslt as gcmr # 최근 mlb경기 결과
 import resources.getTodayKBOgame as gtkg # 오늘 kbo경기 일정
@@ -37,7 +36,7 @@ async def processSchedule():
     logger.info(fullScheule)
 
     if not fullScheule:
-        return JSONResponse(content={"cheduled_matches": fullScheule}, status_code=200)
+        return JSONResponse(content={"scheduled_matches": fullScheule}, status_code=200)
     
     return JSONResponse(content={"scheduled_matches":fullScheule}, status_code=200)
 
