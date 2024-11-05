@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+# 전체 팀정보
 @router.get("/teamsInfo",response_model=dict)
 async def get_teams():
     try:
@@ -36,7 +37,7 @@ async def get_teams():
         logger.error(f"Error fetching teams: {str(e)}")
         raise HTTPException(status_code=500, detail="An error occurred while fetching teams.")
 
-
+# 특정 팀정보
 @router.get("/teamInfo", response_model=dict)
 async def get_teamInfo(teamcode : str):
     try:
@@ -59,6 +60,7 @@ async def get_teamInfo(teamcode : str):
         logger.error(f"Error fetching team info for teamcode {teamcode}: {str(e)}")
         raise HTTPException(status_code=500, detail="An error occurred while fetching team information.")
 
+#포지션별 선수 모음
 @router.get("/positionInfo", response_model=dict)
 async def get_positionInfo(pos : str):
     try:
@@ -85,6 +87,7 @@ async def get_positionInfo(pos : str):
         logger.error(f"Error fetching team info for position {pos}: {str(e)}")
         raise HTTPException(status_code=500, detail="An error occurred while fetching position information.")
     
+# 팀 26인로스터 정보
 @router.get("/roster", response_model=dict)
 async def get_roster(teamcode : str):
     try:
