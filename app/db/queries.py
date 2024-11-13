@@ -48,3 +48,15 @@ select
  where tmn.teamcode = %s
  order by "position" 
 """
+
+teamPos = """
+select   
+  case 
+  	when tmn.league_code = 'AL'
+  	then 'American League'
+  	when tmn.league_code = 'NL'
+  	then 'National Leauge'
+  end as league_name, tmn.fullname, tmn."position", tmn.teamname
+  from tbl_mlbplayer_nt01 tmn 
+ where tmn.teamcode = %s and tmn."position" = %s
+"""

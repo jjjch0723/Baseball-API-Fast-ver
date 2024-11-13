@@ -6,6 +6,7 @@ from app.db.queries import teamsInfo
 from app.db.queries import teamInfo as ti
 from app.db.queries import position
 from app.db.queries import players
+from app.db.queries import teamPos
 import logging
 
 logger = logging.getLogger(__name__)
@@ -114,3 +115,51 @@ async def get_roster(teamcode : str):
         logger.error(f"Error fetching team info for position {teamcode}: {str(e)}")
         raise HTTPException(status_code=500, detail="An error occurred while fetching position information.")
     
+#특정 팀 특정포지션
+@router.get("/teamInfo/position", response_model=dict)
+async def get_teamPosition(teamcode: str, pos: str):
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(teamPos, (teamcode, pos))
+            team_positions = cursor.fetchall()
+
+            if not team_positions:
+                return JSONResponse(status_code=404, content={"message": "Check the teamcode and position"})
+
+            result = []
+            for teamPos_ in team_positions:
+                teamPos_ = list(teamPos_)
+
+                # 포지션에 따른 변환
+                if teamPos_[2] == 'P':
+                    teamPos_[2] = "Pitcher"
+                elif teamPos_[2] == 'LF':
+                    teamPos_[2] = "Left Fielder"
+                elif teamPos_[2] == 'CF':
+                    teamPos_[2] = "Center Fielder"
+                elif teamPos_[2] == 'RF':
+                    teamPos_[2] = "Right Fielder"
+                elif teamPos_[2] == '1B':
+                    teamPos_[2] = "First Baseman"
+                elif teamPos_[2] == '2B':
+                    teamPos_[2] = "Second Baseman"
+                elif teamPos_[2] == '3B':
+                    teamPos_[2] = "Third Baseman"
+                elif teamPos_[2] == 'SS':
+                    teamPos_[2] = "Shortstop"
+                elif teamPos_[2] == 'C':
+                    teamPos_[2] = "Catcher"
+
+                # 결과에 추가
+                result.append({
+                    "리그명": teamPos_[0],
+                    "이름": teamPos_[1],
+                    "포지션": teamPos_[2],
+                    "팀명": teamPos_[3]
+                })
+
+            return {"result": result}
+    except Exception as e:
+        logger.error(f"error : {e}")
+        raise HTTPException(status_code=500, detail="An error occurred while fetching position information.")
