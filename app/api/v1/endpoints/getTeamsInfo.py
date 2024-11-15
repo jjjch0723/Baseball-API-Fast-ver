@@ -7,6 +7,7 @@ from app.db.queries import teamInfo as ti
 from app.db.queries import position
 from app.db.queries import players
 from app.db.queries import teamPos
+from app.db.queries import bat_status
 import logging
 
 logger = logging.getLogger(__name__)
@@ -157,6 +158,44 @@ async def get_teamPosition(teamcode: str, pos: str):
                     "이름": teamPos_[1],
                     "포지션": teamPos_[2],
                     "팀명": teamPos_[3]
+                })
+
+            return {"result": result}
+    except Exception as e:
+        logger.error(f"error : {e}")
+        raise HTTPException(status_code=500, detail="An error occurred while fetching position information.")
+
+
+@router.get("/teamInfo/status/bat", response_model=dict)
+async def get_status(league : str, year : str):
+    try:
+        with get_connection() as conn:
+            cursor = conn.cursor()
+            cursor.execute(bat_status, (league, year))
+            batStatus = cursor.fetchall()
+
+            if not batStatus:
+                return JSONResponse(status_code=404, content={"message": "Check the teamcode and position"})
+
+            result = []
+
+            for row in batStatus:
+                result.append({
+                    "팀명_KR": row[0],
+                    "팀명_US": row[1],
+                    "타석": row[2],
+                    "안타": row[3],
+                    "2루타": row[4],
+                    "3루타": row[5],
+                    "홈런": row[6],
+                    "타점": row[7],
+                    "도루": row[8],
+                    "도루실패": row[9],
+                    "볼넷": row[10],
+                    "삼진": row[11],
+                    "타율": row[12],
+                    "출루율": row[13],
+                    "장타율": row[14]
                 })
 
             return {"result": result}

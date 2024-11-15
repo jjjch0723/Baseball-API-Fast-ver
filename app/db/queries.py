@@ -60,3 +60,11 @@ select
   from tbl_mlbplayer_nt01 tmn 
  where tmn.teamcode = %s and tmn."position" = %s
 """
+
+bat_status = """
+select ttm.teamname_kr,ttm.teamname_us, tkn.ab, tkn.r, tkn.h, tkn.twob, tkn.threeb, tkn.hr, tkn.rbi,
+		tkn.sb, tkn.cs, tkn.bb, tkn.so, tkn.avg, tkn.obp, tkn.slg 
+   from tbl_%sbat_nt02 tkn
+  inner join tbl_team_mt01 ttm on tkn.teamcode = ttm.team_code 
+  where tkn."year" = %s
+"""
